@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -12,6 +13,8 @@ public class Ch3Ex1Activity extends AppCompatActivity {
     private LottieAnimationView animationView;
     private CheckBox loopCheckBox;
     private SeekBar seekBar;
+    private TextView tv;
+    float pro=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +24,16 @@ public class Ch3Ex1Activity extends AppCompatActivity {
         animationView = findViewById(R.id.animation_view);
         loopCheckBox = findViewById(R.id.loop_checkbox);
         seekBar = findViewById(R.id.seekbar);
+        tv=findViewById(R.id.textView3);
+        tv.setText("百分比:0.0");
+
 
         loopCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // 当选中自动播放的时候，开始播放 lottie 动画，同时禁止手动修改进度
+                    animationView.setProgress(pro);
                     animationView.playAnimation();
                     seekBar.setEnabled(false);
                 } else {
@@ -41,6 +48,9 @@ public class Ch3Ex1Activity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // TODO ex1-2: 这里应该调用哪个函数呢
+                pro =(float)seekBar.getProgress()/(float)seekBar.getMax();
+                tv.setText("百分比:"+ pro);
+                animationView.setProgress(pro);
                 // 提示1：可以参考 https://airbnb.io/lottie/#/android?id=custom-animators
                 // 提示2：SeekBar 的文档可以把鼠标放在 OnProgressChanged 中间，并点击 F1 查看，
                 // 或者到官网查询 https://developer.android.google.cn/reference/android/widget/SeekBar.OnSeekBarChangeListener.html#onProgressChanged(android.widget.SeekBar,%20int,%20boolean
